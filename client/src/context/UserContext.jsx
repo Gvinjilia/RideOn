@@ -4,7 +4,7 @@ export const UserContext = createContext();
 
 export const useUsers = () => useContext(UserContext);
 
-const API_URL = 'http://localhost:3000/api'
+const API_URL = 'https://test-y8eh.onrender.com/api'
 
 export const UserProvider = ({ children }) => {
     const [users, setUsers] = useState([]);

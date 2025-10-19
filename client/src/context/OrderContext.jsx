@@ -4,7 +4,7 @@ export const OrderContext = createContext();
 
 export const useOrders = () => useContext(OrderContext);
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'https://test-y8eh.onrender.com/api'
 
 export const OrderProvider = ({ children }) => {
     const [orders, setOrders] = useState([]);

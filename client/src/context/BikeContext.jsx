@@ -5,7 +5,7 @@ export const BikeContext = createContext();
 
 export const useBikes = () => useContext(BikeContext);
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'https://test-y8eh.onrender.com/api'
 
 export const BikeProvider = ({ children }) => {
     const [bikes, setBikes] = useState([]);

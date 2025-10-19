@@ -4,7 +4,7 @@ export const ReviewContext = createContext();
 
 export const useReviews = () => useContext(ReviewContext);
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'https://test-y8eh.onrender.com/api'
 
 export const ReviewProvider = ({ children }) => {
     const [reviews, setReviews] = useState([]);

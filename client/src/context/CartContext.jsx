@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from "react";
 
 export const CartContext = createContext();
 
-const API_URL = 'http://localhost:3000/api'
+const API_URL = 'https://test-y8eh.onrender.com/api'
 
 export const useCart = () => useContext(CartContext);
 
