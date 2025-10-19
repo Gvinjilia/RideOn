@@ -10,6 +10,7 @@ const orderRouter = require('./routers/order.router');
 const reviewRouter = require('./routers/review.router');
 const cors = require('cors');
 const userRouter = require('./routers/user.router');
+const path = require('path');
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(cors({
     origin: 'http://localhost:5173',
     credentials: true
 }));
+app.use(express.static(path.join(__dirname, 'dist')))
 app.use(cookieParser());
 app.use(express.json());
 
