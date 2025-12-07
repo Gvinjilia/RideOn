@@ -17,6 +17,8 @@ import ContactUs from "./pages/ContactUs"
 import MeetOurTeam from "./pages/MeetOurTeam"
 import Users from "./pages/Users"
 
+import { ToastContainer } from 'react-toastify';
+
 function App() {
   const { user, autoLogin } = useAuth();
   const navigate = useNavigate();
@@ -45,6 +47,8 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/users" element={<Users />} />
       </Routes>
+
+      <ToastContainer position="bottom-right" />
     </>
   )
 }

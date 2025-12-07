@@ -4,7 +4,7 @@ export const UserContext = createContext();
 
 export const useUsers = () => useContext(UserContext);
 
-const API_URL = 'https://test-y8eh.onrender.com/api'
+const API_URL = import.meta.env.VITE_SERVER_URL + '/api';
 
 export const UserProvider = ({ children }) => {
     const [users, setUsers] = useState([]);

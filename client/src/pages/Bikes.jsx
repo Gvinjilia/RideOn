@@ -31,10 +31,10 @@ const Bikes = () => {
     
     return (
         <>
-            <div className="flex flex-col justify-center items-center gap-5 ml-13">
-                    <div className="flex flex-wrap justify-start ml-13">
+            <div className="flex flex-col justify-center items-center gap-5">
+                    <div className="flex flex-wrap justify-center items-center">
                         {paginated.map((bike) => (
-                            <div key={bike._id}>
+                            <div key={bike._id} className="lg:w-95 md:w-80 md:h-134 w-75">
                                 <div onClick={() => getBike(bike._id)} className="border border-gray-300 p-3 h-120 flex flex-col justify-center">
                                     <div>
                                         <img src={bike.images[0]} width={350} />
@@ -55,7 +55,7 @@ const Bikes = () => {
                                     </div>
                                     <br />
                                     </div>
-                                    <div className="flex items-center justify-between w-95 border p-4 border-gray-300">
+                                    <div className="flex items-center justify-between lg:w-95 md:w-80 border p-4 border-gray-300">
                                         <button onClick={() => addToCart(bike)} style={{fontFamily: 'var(--font-family, "Roboto Condensed", sans-serif)'}} className="font-semibold flex gap-3 justify-center items-center"><img src={plus} className="brightness-0 saturate-100 w-6 border-2 rounded-full"/>ADD TO CART</button>
                                         {
                                             user.role === 'admin' && (

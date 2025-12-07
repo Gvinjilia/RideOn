@@ -1,10 +1,11 @@
 import { createContext, useContext, useState } from "react";
+import { toast } from "react-toastify";
 
 export const ReviewContext = createContext();
 
 export const useReviews = () => useContext(ReviewContext);
 
-const API_URL = 'https://test-y8eh.onrender.com/api'
+const API_URL = import.meta.env.VITE_SERVER_URL + '/api';
 
 export const ReviewProvider = ({ children }) => {
     const [reviews, setReviews] = useState([]);
@@ -31,6 +32,8 @@ export const ReviewProvider = ({ children }) => {
     }
 
     const addReview = async (formData, bikeId) => {
+        const toastId = toast.loading('adding Review...');
+
         try {
             const res = await fetch(`${API_URL}/reviews/${bikeId}`, {
                 method: 'POST',
@@ -46,12 +49,25 @@ export const ReviewProvider = ({ children }) => {
             }
 
             setReviews([...reviews, result]);
+            toast.update(toastId, {
+                render: 'Review added successfully',
+                type: 'success',
+                isLoading: false,
+                autoClose: 2000
+            });
         } catch(err){
-            alert(err.message)
+            toast.update(toastId, {
+                render: `Error: ${err.message}`,
+                type: 'error',
+                isLoading: false,
+                autoClose: 2000
+            });
         }
     }
 
     const removeReview = async (reviewId) => {
+        const toastId = toast.loading('removing...');
+
         try {
             const res = await fetch(`${API_URL}/reviews/${reviewId}`, {
                 method: 'DELETE',
@@ -64,9 +80,19 @@ export const ReviewProvider = ({ children }) => {
             }
 
             setReviews((prevValue) => prevValue.filter((r) => r._id !== reviewId));
-            alert('Review deleted successfully!');
+            toast.update(toastId, {
+                render: 'Review Deleted successfully',
+                type: 'success',
+                isLoading: false,
+                autoClose: 2000
+            });
         } catch(err){
-            console.log(err)
+            toast.update(toastId, {
+                render: `Error: ${err.message}`,
+                type: 'error',
+                isLoading: false,
+                autoClose: 2000
+            });
         }
     } 
 

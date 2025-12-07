@@ -1,11 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 export const BikeContext = createContext();
 
 export const useBikes = () => useContext(BikeContext);
 
-const API_URL = 'https://test-y8eh.onrender.com/api'
+const API_URL = import.meta.env.VITE_SERVER_URL + '/api';
 
 export const BikeProvider = ({ children }) => {
     const [bikes, setBikes] = useState([]);
@@ -92,6 +93,8 @@ export const BikeProvider = ({ children }) => {
     }
 
     const deleteBike = async (bikeId) => {
+        const toastId = toast.loading('Deleting a Product...');
+
         try {
             const res = await fetch(`${API_URL}/bikes/${bikeId}`, {
                 method: 'DELETE',
@@ -104,13 +107,20 @@ export const BikeProvider = ({ children }) => {
             }
 
             setBikes((prev) => prev.filter((bike) => bike._id !== bikeId));
-            alert('Product deleted successfully!');
+            toast.update(toastId, {
+                render: 'Product deleted successfully',
+                type: 'success',
+                isLoading: false,
+                autoClose: 2000
+            });
         } catch(err){
             console.log(err)
         }
     }
 
     const addBike = async (bikeData) => {
+        const toastId = toast.loading('Adding a new Product...');
+
         try {
             const res = await fetch(`${API_URL}/bikes`, {
                 method: 'POST',
@@ -126,12 +136,26 @@ export const BikeProvider = ({ children }) => {
             }
 
             setBikes((prevValues) => [...prevValues, result]);
+
+            toast.update(toastId, {
+                render: 'Product successfully added',
+                type: 'success',
+                isLoading: false,
+                autoClose: 2000
+            });
         } catch(err){
-            console.log(err)
+            toast.update(toastId, {
+                render: `Error: ${err.message}`,
+                type: 'error',
+                isLoading: false,
+                autoClose: 2000
+            });
         }
     }
     
     const updateBike = async (bikeData, bikeId) => {
+        const toastId = toast.loading('updating Product...');
+
         try {
             const res = await fetch(`${API_URL}/bikes/${bikeId}`, {
                 method: 'PATCH',
@@ -147,8 +171,20 @@ export const BikeProvider = ({ children }) => {
             }
 
             setBikes((prevValues) => prevValues.map((bike) => bike._id === result._id ? result : bike));
+
+            toast.update(toastId, {
+                render: 'Product updated successfully',
+                type: 'success',
+                isLoading: false,
+                autoClose: 2000
+            });
         } catch(err){
-            console.log(err)
+            toast.update(toastId, {
+                render: `Error: ${err.message}`,
+                type: 'error',
+                isLoading: false,
+                autoClose: 2000
+            });
         }
     }
 

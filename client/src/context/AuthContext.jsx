@@ -1,11 +1,12 @@
 import { createContext, useContext, useState } from "react";
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 export const AuthContext = createContext();
 
 export const useAuth = () => useContext(AuthContext);
 
-const API_URL = 'https://test-y8eh.onrender.com/api'
+const API_URL = import.meta.env.VITE_SERVER_URL + '/api';
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
@@ -13,7 +14,9 @@ export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
 
     const login = async (formData) => {
-        try{
+        const toastId = toast.loading('logging in...');
+
+        try {
             const res = await fetch(`${API_URL}/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -28,13 +31,28 @@ export const AuthProvider = ({ children }) => {
             }
 
             setUser(result.data.user);
-            navigate('/profile')
+
+            toast.update(toastId, {
+                render: 'Logged in successfully!',
+                type: 'success',
+                isLoading: false,
+                autoClose: 2000
+            });
+
+            navigate('/profile');
         } catch (err) {
-            alert(err.message)
+            toast.update(toastId, {
+                render: `Error: ${err.message}`,
+                type: 'error',
+                isLoading: false,
+                autoClose: 2000
+            });
         }
-    }
+    };
 
     const signup = async (formData) => {
+        const toastId = toast.loading('signing in...');
+
         try{
             const res = await fetch(`${API_URL}/auth/signup`, {
                 method: 'POST',
@@ -49,13 +67,23 @@ export const AuthProvider = ({ children }) => {
                 throw new Error(result.message)
             }
 
-            console.log(result.message);
+            toast.update(toastId, {
+                render: 'account created successfully!',
+                type: 'success',
+                isLoading: false,
+                autoClose: 2000
+            });
 
             navigate('/login');
         } catch (err) {
-            alert(err.message)
+            toast.update(toastId, {
+                render: `Error: ${err.message}`,
+                type: 'error',
+                isLoading: false,
+                autoClose: 2000
+            });
         }
-    }
+    };
 
     const autoLogin = async () => {
         try{
@@ -74,9 +102,11 @@ export const AuthProvider = ({ children }) => {
         } catch(err){
             console.log(err.message);
         }
-    }
+    };
 
     const logout = async () => {
+        const toastId = toast.loading('logging out...');
+
         try {
             const res = await fetch(`${API_URL}/auth/logout`, {
                 method: 'POST',
@@ -90,13 +120,25 @@ export const AuthProvider = ({ children }) => {
                 throw new Error(result.message)
             }
 
-            alert(result);
             setUser(null);
+
+            toast.update(toastId, {
+                render: 'Logged out successfully!',
+                type: 'success',
+                isLoading: false,
+                autoClose: 2000
+            });
+
             navigate('/login');
         } catch(err){
-            console.log(err)
+            toast.update(toastId, {
+                render: `Error: ${err.message}`,
+                type: 'error',
+                isLoading: false,
+                autoClose: 2000
+            });
         }
-    }
+    };
 
     return (
         <AuthContext.Provider value={{signup, login, user, autoLogin, logout}}>
